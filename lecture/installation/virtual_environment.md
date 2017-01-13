@@ -18,7 +18,7 @@ virtual environment
 ## virtualenv
 
 ```python
-$ pip install virtualenv
+$ sudo pip install virtualenv
 ```
 
 ---
@@ -41,21 +41,15 @@ $ mkdir project
 ```python
 $ cd project
 $ virtualenv virenv
+
+$ virtualenv -p /usr/local/bin/python3.6 virenv2
+```
+
+---
+## virtualenv
+
+```python
 $ source virenv/bin/activate
-```
-
----
-## virtualenv
-
-```python
-$ pip freeze --local > requirements.txt
-```
-
----
-## virtualenv
-
-```python
-$ cat requirements.txt
 ```
 
 ---
@@ -73,25 +67,21 @@ $ rm -rf virenv
 ```
 
 ---
-## virtualenv
-
-```python
-$ virtualenv -p usr/bin python2.7 py27_env
-```
-
----
-## virtualenv
-
-```python
-$ pip install -r requirements.txt
-```
-
----
 ## virtual environment in visual studio code
 
 ```python
+(in settings.json)
+
+{
+    "python.pythonPath" : 
+    "[virtual environ folder]/bin/python3.6",
+    "python.autoComplete.extraPaths" : [
+    "[virtual environ folder]/lib/python3.6",
+    "[virtual environ folder]/lib/python3.6/site-packages"
+    ]
 
 ```
+
 
 
 
