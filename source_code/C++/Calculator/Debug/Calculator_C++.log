@@ -1,0 +1,8 @@
+﻿  Calculator.cpp
+d:\강의자료모음\컴퓨터공학스쿨\소스코드\c++\calculator\calculator.cpp(26): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
+  CalcMain.cpp
+  Generating Code...
+d:\강의자료모음\컴퓨터공학스쿨\소스코드\c++\calculator\calculator.cpp(46): warning C4715: 'Calculator::GetWeight': not all control paths return a value
+  Calculator_C++.vcxproj -> D:\강의자료모음\컴퓨터공학스쿨\소스코드\C++\Calculator\Debug\Calculator_C++.exe
+  Calculator_C++.vcxproj -> D:\강의자료모음\컴퓨터공학스쿨\소스코드\C++\Calculator\Debug\Calculator_C++.pdb (Full PDB)

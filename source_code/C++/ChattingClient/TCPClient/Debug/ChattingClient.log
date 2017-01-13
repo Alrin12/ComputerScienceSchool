@@ -1,0 +1,10 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(368,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  TCPClientSocket.cpp
+d:\강의자료모음\왕초보프로그래밍\소스코드\chattingclient\tcpclient\tcpclientsocket.cpp(13): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(1850): note: see declaration of 'inet_addr'
+  TCPClientManager.cpp
+d:\강의자료모음\왕초보프로그래밍\소스코드\chattingclient\tcpclient\tcpclientmanager.cpp(13): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+  Application.cpp
+  Generating Code...
+  ChattingClient.vcxproj -> D:\강의자료모음\왕초보프로그래밍\소스코드\ChattingClient\TCPClient\../Lib\TCPClient.lib
