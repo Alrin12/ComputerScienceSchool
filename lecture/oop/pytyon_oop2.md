@@ -252,6 +252,67 @@ p2.showMyInfo()
 ```
 
 ---
+## property - getter
+
+```python
+class Person:
+    def __init__(self, name, age, money):
+        self.name = name
+        self.age = age
+        #getter 함수 호출
+        self.money = money
+
+    #getter
+    @property
+    def money(self):
+        print("getter of money")
+        return self._money
+
+```
+
+---
+## property - setter
+
+```python
+ #setter
+    @money.setter
+    def money(self, mon):
+        print("setter of money")
+        if mon <0:
+            self._money = 0
+        elif mon > 10000:
+            self._money = 10000
+        else:
+            self._money = mon
+
+```
+
+---
+## property - 출력 결과
+
+```python
+    #setter 호출
+    #getter 호출
+    p1 = Person('greg', 35, -300)
+    print(p1.money)
+    print('\n')
+    
+    #setter 호출
+    p1.money = 100000
+    print('\n')
+    
+    #getter 호출
+    money = p1.money
+    print(money)
+    print('\n')
+    
+    #정보은닉은 안됩니다.
+    p1._money = 550
+    print(p1._money)
+```
+
+
+---
 ## 클래스 실습 예제
 
 ```python
