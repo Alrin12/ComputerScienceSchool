@@ -38,12 +38,17 @@ while 1:
 scores = []
 
 for item in items:
-    scores.append(list(item.values())[0])
+    #scores.append(list(item.values())[0])
+    keys = item.keys()
+    for key in keys:
+        scores.append(item[key])
 
 avrg = average(scores)
 variance = round(variance(scores, avrg), 1)
 standard_deviation = round(math.sqrt(variance), 1)
 
+
+'''
 print('*' * 50)
 print("A반 성적 분석 결과")
 print('*' * 50)
@@ -51,6 +56,7 @@ print("A반의 평균은 {0}점이고 분산은 {1}이며, 따라서 표준편�
 print('*' * 50)
 print("A반 종합 평가")
 print('*' * 50)
+'''
 evaluateClass(avrg, standard_deviation)
 
 f.close()

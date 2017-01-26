@@ -17,7 +17,7 @@ pickle.dump(data, f)
 data = {'melisa' : 100}
 pickle.dump(data, f)
 
-data = {'thor' : 0}
+data = {'thor' : 10}
 pickle.dump(data, f)
 
 data = {'elen' : 25}
@@ -29,7 +29,7 @@ pickle.dump(data, f)
 data = {'steve' : 95}
 pickle.dump(data, f)
 
-data = {'anna' : 10}
+data = {'anna' : 20}
 pickle.dump(data, f)
 
 

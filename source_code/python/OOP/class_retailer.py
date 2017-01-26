@@ -8,6 +8,7 @@ class Retailer(Person):
         self.product = product
 
     def Sell(self, other, how_many):
+        #클래스 변수 : 객체 or 클래스를 통해 접근 가능
         if self.product >=how_many and other.money >= self.price * how_many:
             self.product -= how_many
             other.product += how_many

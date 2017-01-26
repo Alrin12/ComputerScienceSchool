@@ -47,6 +47,11 @@ class DataHandler:
     def GetTheLowest(rawdata):
         lowest = ''
         lowscore = 0
+        for key in rawdata.keys():
+            if rawdata[key] > 0 :
+                lowscore = rawdata[key]
+                break
+				
         for ele in rawdata:
             if lowscore>= rawdata[ele]:
                 lowest = ele
@@ -89,15 +94,12 @@ class DataHandler:
         print('*' * 50)
         DataHandler.evaluator.evaluateClass(self.average, self.std_dev)
         
-    #ex2
     def WhoIsTheHighest(self):
         return self.highest
 
-    #ex2
     def WhoIsTheLowest(self):
         return self.lowest
 
-    #ex2
     def GetScoreByName(self, name):
         return self.rawdata[name]
     

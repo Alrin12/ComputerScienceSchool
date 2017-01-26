@@ -72,6 +72,7 @@ showInfo(a = 3, b = 5)
 #내가 하고 싶은 것은
 #먼저 제곱한 후 2를 더한 것, 즉 9 + 2와 25 + 2 이므로
 #출력 예상 값은 a = 11, b = 27
+'''
 @square_two
 @increase_two
 def showInfo(a, b):
@@ -79,6 +80,6 @@ def showInfo(a, b):
 
 
 showInfo(a = 3, b = 5)
-
+'''
 
 

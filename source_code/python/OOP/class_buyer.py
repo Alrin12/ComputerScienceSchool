@@ -9,9 +9,8 @@ class Buyer(Person):
         if self.money >= other.price * how_many and other.product >=how_many:
             self.product += how_many
             other.product -= how_many
-            
-            self.money -= other.price * how_many
-            other.money +=other.price * how_many
+
+            self.giveMoney(other, other.price * how_many )
             
 
     def showMyInfo(self):

@@ -32,6 +32,8 @@ original_function()
 
 #original function을 계속 유지하는 방법
 #wraps 데코레이터
+
+'''
 from functools import wraps
 
 
@@ -57,3 +59,4 @@ def original_function():
     print("original function start")
 
 original_function()
+'''

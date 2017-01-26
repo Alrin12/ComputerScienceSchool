@@ -110,6 +110,7 @@ print(func3.__name__)
 
 
 #위에 있는 함수를 그대로 가져다가 변경해볼게요
+
 def outer(org_func):
     def inner(*args, **kwargs):
         print("추가하려는 기능 실행 시작")
@@ -131,9 +132,8 @@ def func4(li):
 
 #outer 함수의 호출이 없는 것에 주목하세요
 func4([4, 4, 10, 10, 12, 16])
-func4([5, 5, 5, 5, 5])
-print(func4.__name__)
-
+#func4([5, 5, 5, 5, 5])
+#print(func4.__name__)
 
 
 
