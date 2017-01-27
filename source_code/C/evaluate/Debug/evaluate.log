@@ -1,0 +1,4 @@
+﻿  evaluate.c
+c:\users\user\desktop\c_api_python\evaluate\evaluate.c(83): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+  evaluate.vcxproj -> C:\Users\User\Desktop\C_API_python\evaluate\Debug\evaluate_d.pyd
+  evaluate.vcxproj -> C:\Users\User\Desktop\C_API_python\evaluate\Debug\evaluate_d.pdb (Full PDB)

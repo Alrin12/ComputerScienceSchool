@@ -65,9 +65,9 @@ class DataHandler:
         self.items = DataHandler.GetItemsFromFile(filename)
         self.scores = DataHandler.GetScores(self.items)
         
-        self.average = self.average = round(DataHandler.evaluator.average(self.scores), 1)
-        self.variance = self.variance = round(DataHandler.evaluator.variance(self.scores, self.average), 1)
-        self.std_dev = self.std_dev = round(math.sqrt(self.variance), 1)
+        self.average = round(DataHandler.evaluator.average(self.scores), 1)
+        self.variance = round(DataHandler.evaluator.variance(self.scores, self.average), 1)
+        self.std_dev = round(math.sqrt(self.variance), 1)
         self.clsname = clsname
         #ex2
         self.rawdata = DataHandler.GetRawdataInDic(self.items)
