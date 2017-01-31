@@ -30,7 +30,10 @@ class Heap:
             return True
         else:
             return False
-        
+
+    def GetNumOfData(self):
+        return self.numOfData
+    
     #Insert()함수에서 부모 노드와 비교
     #부모 노드 값과 바꿔야 하는지 판단하는 함수
     def IsGoUp(self, idx, data):
@@ -181,7 +184,7 @@ if __name__ == "__main__":
     heap.Insert(6)
     heap.Insert(9)
 
-    ndata = heap.numOfData
+    ndata = heap.GetNumOfData()
     
     #insert가 잘 되었는지 테스트 코드
     for i in range(1, ndata+1):
