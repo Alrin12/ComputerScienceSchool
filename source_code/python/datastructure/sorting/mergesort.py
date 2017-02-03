@@ -1,5 +1,10 @@
+mergesort_cnt = 0
+merge_two_section_cnt = 0
 
 def MergeTwoSection(unsorted_list, start, mid, end):
+    global merge_two_section_cnt
+    merge_two_section_cnt+=1
+    print(start, end, "in MergeTwoSection cnt : ", merge_two_section_cnt)
     #정렬하고자 하는 리스트의 왼쪽 부분 index
     leftIdx = start
     #정렬하고자 하는 리스트의 오른쪽 부분 첫번째 idx
@@ -65,7 +70,9 @@ def MergeTwoSection(unsorted_list, start, mid, end):
 
 def mergesort(unsorted_list, start, end):
     #재귀함수 호출 순서를 알아보기 위한 테스트 코드
-    #print(start, end)
+    global mergesort_cnt
+    mergesort_cnt+=1
+    print(start, end, "in mergesort cnt : ", mergesort_cnt)
     if start >= end:
         return
 
