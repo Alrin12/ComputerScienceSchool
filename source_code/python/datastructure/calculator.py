@@ -50,7 +50,7 @@ class Calculator:
                         #가중치가 더 낮은 연산자를 만날 때까지
                         #모두 수식 리스트에 담는다
                         #자신과 같은 가중치를 가진 연산자를 만나도 수식 리스트에 담는다!!!
-                        elif GetWeight(ch) <= GetWeight(listStack[-1]):
+                        else:
                             #스택리스트가 비어있지 않아야 수식 리스트에 담을 수 있다!!
                             while listStack and GetWeight(ch) <=GetWeight(listStack[-1]):
                                 op = listStack.pop()
