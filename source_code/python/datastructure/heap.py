@@ -11,9 +11,9 @@ class Heap:
     def GetRightChildIdx(self, idx):
         return idx * 2 + 1
 
-    def __init__(self, arr_length = 100, s_min_max = "min"):
+    def __init__(self, s_min_max = "min"):
         #dynamic array의 역할을 리스트가 한다
-        self.dynamicArr = [ None  for i in range(arr_length+1)]
+        self.dynamicArr = [ None, ]
         #맨 마지막 노드의 index와 일치한다
         self.numOfData = 0
         #최소 힙 아니면 최대 힙을 나타내는 flag 역할
@@ -63,10 +63,11 @@ class Heap:
         #만약 heap이 비어있다면
         if self.IsEmpty():
             self.numOfData +=1
-            self.dynamicArr[self.numOfData] = data
+            self.dynamicArr.append(data)
             return
         #새로운 노드가 생겼으므로 numOfData는 1 상승
         self.numOfData+=1
+        self.dynamicArr.append(data)
         #데이터의 인덱스에 맨마지막 인덱스 값(numOfData)를 받아온 후
         idx_data = self.numOfData
 
@@ -171,7 +172,7 @@ class Heap:
             
 
 if __name__ == "__main__":
-    heap = Heap(100, "min")
+    heap = Heap("min")
     heap.Insert(3)
     heap.Insert(5)
     heap.Insert(1)
@@ -187,10 +188,10 @@ if __name__ == "__main__":
     ndata = heap.GetNumOfData()
     
     #insert가 잘 되었는지 테스트 코드
-    for i in range(1, ndata+1):
-        print(heap.dynamicArr[i])
+    #for i in range(1, ndata+1):
+     #   print(heap.dynamicArr[i])
 
-    print("\n\n")
+    #print("\n\n")
 
     #delete가 잘 되었는지 테스트
     

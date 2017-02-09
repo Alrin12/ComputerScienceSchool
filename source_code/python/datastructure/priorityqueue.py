@@ -1,8 +1,8 @@
-import heap
+from heap import Heap
 
 class PriorityQueue:
-    def __init__(self, arr_length = 100, s_min_max = "min"):
-        self.heap = heap.Heap(arr_length, s_min_max)
+    def __init__(self, s_min_max = "min"):
+        self.heap = Heap(s_min_max)
 
     def IsEmpty(self):
         return self.heap.IsEmpty()
@@ -17,7 +17,7 @@ class PriorityQueue:
         return self.heap.Delete()
 
 if __name__ == "__main__":
-    pq = PriorityQueue(100, "max")
+    pq = PriorityQueue("min")
     pq.Enqueue(3)
     pq.Enqueue(7)
     pq.Enqueue(2)
