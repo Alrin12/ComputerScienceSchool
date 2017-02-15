@@ -74,4 +74,18 @@ for x in list_x:
 goto(300, 20)
 write("O(logn)", font=("Arial", 12, "normal"))
 
+#O(1)
+for x in list_x:
+    y = 1
+    up()
+    _x, _y = magnify(x, y)
+    goto(_x, _y)
+    dot(2, "orange")
+
+goto(200, 30)
+write("O(1)", font=("Arial", 12, "normal"))
+
+
+    
+
 
