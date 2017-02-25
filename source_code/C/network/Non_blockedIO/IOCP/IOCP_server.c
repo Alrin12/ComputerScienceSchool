@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <process.h>
 #include <string.h>
+#include <process.h>
 #include <WinSock2.h>
 
 #pragma comment(lib, "ws2_32.lib")
 
 #define BUF_SIZE    1024
-enum MODE { READ = 0, WRITE };
+
+enum MODE {RECV = 0, SEND};
 
 typedef struct __sockmodule
 {
@@ -15,32 +16,32 @@ typedef struct __sockmodule
 	SOCKADDR_IN clntAddr;
 }SOCKMODULE, *LPSOCKMODULE;
 
-typedef struct __bufmodule
+typedef struct __buffermodule
 {
 	OVERLAPPED overlapped;
 	char buf[BUF_SIZE];
 	WSABUF databuf;
-	int rwMode;
+	int rsMode;
 }BUFFERMODULE, *LPBUFFERMODULE;
 
-DWORD WINAPI threadMain(LPVOID *);
+int WINAPI ThreadMain(void * lpCompletionPort);
 void ErrorHandling(char * message);
 
 int main(int argc, char ** argv)
 {
 	WSADATA wsaData;
-	SOCKET hServSock;
-	SOCKADDR_IN servAddr;
+	SOCKET hServSock, hClntSock;
+	SOCKADDR_IN servAddr, clntAddr;
+	int sz_clntAddr;
+	SYSTEM_INFO system_info;
 	HANDLE hCompletionPort;
-	SYSTEM_INFO systemInfo;
 
-	int recvBytes;
+	DWORD recvBytes;
 	int flag = 0;
-	
+
 	if (argc != 2)
 	{
-		printf("usage : %s <port> \n", argv[0]);
-		exit(-1);
+		printf("usage %s <port> \n", argv[0]);
 	}
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -48,11 +49,10 @@ int main(int argc, char ** argv)
 
 	hServSock = WSASocket(PF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (hServSock == INVALID_SOCKET)
-		ErrorHandling("WSASock() error!");
+		ErrorHandling("WSASocket() error!");
 
 	hCompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
-	GetSystemInfo(&systemInfo);
-
+	
 	memset(&servAddr, 0, sizeof(servAddr));
 	servAddr.sin_family = AF_INET;
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -64,39 +64,40 @@ int main(int argc, char ** argv)
 	if (listen(hServSock, 5) == SOCKET_ERROR)
 		ErrorHandling("listen() error!");
 
-	for (int i = 0; i < systemInfo.dwNumberOfProcessors; i++)
+	GetSystemInfo(&system_info);
+
+	for (int i = 0; i < system_info.dwNumberOfProcessors; i++)
 	{
-		_beginthreadex(NULL, 0, threadMain, (void *)hCompletionPort, 0, NULL);
+		_beginthreadex(NULL, 0, ThreadMain, (void*)hCompletionPort, 0, NULL);
 	}
 
 	while (1)
 	{
-		SOCKET hClntSock;
-		SOCKADDR_IN clntAddr;
-		int sz_clntAddr;
-		LPSOCKMODULE lpclntmod;
-		LPBUFFERMODULE lpbufmod;
+		LPSOCKMODULE lpsock_mod;
+		LPBUFFERMODULE lpbuf_mod;
 
 		sz_clntAddr = sizeof(clntAddr);
 		hClntSock = accept(hServSock, (SOCKADDR*)&clntAddr, &sz_clntAddr);
 		if (hClntSock == INVALID_SOCKET)
 			ErrorHandling("accept() error!");
-		puts("new client connected.......");
+		puts("new client connected.....");
+		lpsock_mod = (LPSOCKMODULE)malloc(sizeof(SOCKMODULE));
+		lpbuf_mod = (LPBUFFERMODULE)malloc(sizeof(BUFFERMODULE));
 
-		lpclntmod = (LPSOCKMODULE)malloc(sizeof(SOCKMODULE));
-		lpbufmod = (LPBUFFERMODULE)malloc(sizeof(BUFFERMODULE));
+		lpsock_mod->clntSock = hClntSock;
+		memcpy(&lpsock_mod->clntAddr, &clntAddr, sizeof(clntAddr));
 
-		lpclntmod->clntSock = hClntSock;
-		memcpy(&lpclntmod->clntAddr, &clntAddr, sizeof(SOCKADDR_IN));
-		CreateIoCompletionPort((HANDLE)hClntSock, hCompletionPort, (DWORD)lpclntmod, 0);
-		memset(&(lpbufmod->overlapped), 0, sizeof(lpbufmod->overlapped));
-		lpbufmod->databuf.len = BUF_SIZE;
-		lpbufmod->databuf.buf = lpbufmod->buf;
-		lpbufmod->rwMode = READ;
-		if (WSARecv(hClntSock, &lpbufmod->databuf, 1, &recvBytes, &flag, &lpbufmod->overlapped, NULL) == SOCKET_ERROR)
+		lpbuf_mod->databuf.len = BUF_SIZE;
+		lpbuf_mod->databuf.buf = lpbuf_mod->buf;
+		lpbuf_mod->rsMode = RECV;
+		memset(&lpbuf_mod->overlapped, 0, sizeof(lpbuf_mod->overlapped));
+
+		CreateIoCompletionPort((HANDLE)hClntSock, hCompletionPort, (ULONG_PTR)lpsock_mod, 0);
+
+		if (WSARecv(hClntSock, &lpbuf_mod->databuf, 1, &recvBytes, &flag, &lpbuf_mod->overlapped, NULL) == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSA_IO_PENDING)
-				ErrorHandling("WSARecv()_1 error");
+				ErrorHandling("WSARecv() in main error!");
 		}
 	}
 
@@ -105,60 +106,60 @@ int main(int argc, char ** argv)
 	return 0;
 }
 
-DWORD WINAPI threadMain(LPVOID * lpcompletionport)
+int WINAPI ThreadMain(void * lpCompletionPort)
 {
-	int transBytes;
-	DWORD flag = 0;
-	LPSOCKMODULE sock_mod;
-	LPBUFFERMODULE buf_mod;
-	HANDLE hCompletionPort = (HANDLE)lpcompletionport;
+	HANDLE hCompletionPort = (HANDLE)lpCompletionPort;
+	LPSOCKMODULE lpsock_mod;
+	LPBUFFERMODULE lpbuf_mod;
+
+	DWORD transBytes;
+	int flag = 0;
+
 	while (1)
 	{
-		GetQueuedCompletionStatus(hCompletionPort, &transBytes, &(LPDWORD)sock_mod, (LPOVERLAPPED *)&buf_mod, INFINITE);
+		GetQueuedCompletionStatus(hCompletionPort, &transBytes, &lpsock_mod, &lpbuf_mod, INFINITE);
 
-		switch (buf_mod->rwMode)
+		if (transBytes == 0)
 		{
-		case READ:
-			if (transBytes == 0)
-			{
-				puts("client disconnected!");
-				closesocket((SOCKET)sock_mod->clntSock);
-				free(sock_mod);
-				free(buf_mod);
-				continue;
-			}	
-			puts("message received!");
-			memset(&buf_mod->overlapped, 0, sizeof(buf_mod->overlapped));
-			buf_mod->rwMode = WRITE;
-			buf_mod->databuf.len = transBytes;
+			puts("client disconnected!");
+			closesocket(lpsock_mod->clntSock);
+			free(lpsock_mod);
+			free(lpbuf_mod);
+			continue;
+		}
 
-			if (WSASend((SOCKET)sock_mod->clntSock, &buf_mod->databuf, 1, NULL, 0, &buf_mod->overlapped, NULL) == SOCKET_ERROR)
+		switch (lpbuf_mod->rsMode)
+		{
+		case RECV:
+			puts("message received!");
+			memset(&lpbuf_mod->overlapped, 0, sizeof(lpbuf_mod->overlapped));
+			lpbuf_mod->databuf.len = strlen(lpbuf_mod->buf)+1;
+			lpbuf_mod->rsMode = SEND;
+			
+			if (WSASend(lpsock_mod->clntSock, &lpbuf_mod->databuf, 1, NULL, 0, lpbuf_mod, NULL) == SOCKET_ERROR)
 			{
 				if (WSAGetLastError() != WSA_IO_PENDING)
-				{
 					ErrorHandling("WSASend() error!");
-				}
 			}
 
-			buf_mod = (LPBUFFERMODULE)malloc(sizeof(BUFFERMODULE));
-			memset(&buf_mod->overlapped, 0, sizeof(buf_mod->overlapped));
-			buf_mod->databuf.len = BUF_SIZE;
-			buf_mod->databuf.buf = buf_mod->buf;
-			buf_mod->rwMode = READ;
+			lpbuf_mod = (LPBUFFERMODULE)malloc(sizeof(BUFFERMODULE));
+			memset(&lpbuf_mod->overlapped, 0, sizeof(lpbuf_mod->overlapped));
+			lpbuf_mod->databuf.len = BUF_SIZE;
+			lpbuf_mod->databuf.buf = lpbuf_mod->buf;
+			lpbuf_mod->rsMode = RECV;
 
-			if (WSARecv((SOCKET)sock_mod->clntSock, &(buf_mod->databuf), 1, NULL, &flag, &buf_mod->overlapped, NULL) == SOCKET_ERROR)
+			if (WSARecv(lpsock_mod->clntSock, &lpbuf_mod->databuf, 1, NULL, &flag, lpbuf_mod, NULL) == SOCKET_ERROR)
 			{
 				if (WSAGetLastError() != WSA_IO_PENDING)
-					ErrorHandling("WSARecv()_2 error!");
+					ErrorHandling("WSARecv() in threadMain error!");
 			}
 			break;
-		case WRITE:
-			puts("message transmitted");
-			free(buf_mod);
+		case SEND:
+			puts("message sent!");
+			free(lpbuf_mod);
 			break;
 		}
 	}
-	return 0;
 }
 
 void ErrorHandling(char * message)
