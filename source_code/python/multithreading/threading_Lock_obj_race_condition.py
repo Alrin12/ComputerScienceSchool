@@ -4,10 +4,10 @@ g_count = 0
 
 def thread_main():
     global g_count
-    for i in range(100000):
-        lock.acquire()
+    lock.acquire()
+    for i in range(1000000):
         g_count+=1
-        lock.release()
+    lock.release()
 
 lock = threading.Lock()
 
