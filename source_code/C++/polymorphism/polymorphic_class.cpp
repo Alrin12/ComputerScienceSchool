@@ -15,7 +15,7 @@ class Dog : public Animal
 public:
 	virtual void Say()
 	{
-		cout << "I say 港港" << endl;
+		cout << "I say BOW-WOW" << endl;
 	}
 };
 
@@ -24,7 +24,7 @@ class Cat : public Animal
 public:
 	virtual void Say()
 	{
-		cout << "I say 具克 具克" << endl;
+		cout << "I say MEW MEW" << endl;
 	}
 };
 
@@ -33,7 +33,7 @@ class Duck : public Animal
 public:
 	virtual void Say()
 	{
-		cout << "I say 残残" << endl;
+		cout << "I say QUACK QUACK" << endl;
 	}
 };
 
