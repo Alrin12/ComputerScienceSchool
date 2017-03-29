@@ -76,7 +76,6 @@ goto(300, 20)
 write("O(logn)", font=("Arial", 8, "normal"))
 
 #O(1)
-
 for x in list_x:
     y = 1
     up()

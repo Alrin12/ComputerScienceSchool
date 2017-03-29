@@ -157,6 +157,7 @@ class Heap:
         elif self.numOfData == 1:
             self.numOfData-=1
             return self.dynamicArr[1]
+        
         retData = self.dynamicArr[1]
         lastData = self.dynamicArr[self.numOfData]
         self.numOfData-=1
@@ -188,10 +189,10 @@ if __name__ == "__main__":
     ndata = heap.GetNumOfData()
     
     #insert가 잘 되었는지 테스트 코드
-    #for i in range(1, ndata+1):
-     #   print(heap.dynamicArr[i])
+    for i in range(1, ndata+1):
+        print(heap.dynamicArr[i])
 
-    #print("\n\n")
+    print("\n\n")
 
     #delete가 잘 되었는지 테스트
     

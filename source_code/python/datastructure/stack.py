@@ -21,17 +21,18 @@ class Stack:
         self.head = newNode
 
     def pop(self):
-        if self.head == None:
+        if self.IsEmpty():
             print("There is no data")
             exit(-1)
 
         retData = self.head.data
+        delNode = self.head
 
         self.head = self.head.next
         return retData
 
     def peek(self):
-        if self.head == None:
+        if self.IsEmpty():
             print("There is no data")
             exit(-1)
 
