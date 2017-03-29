@@ -4,6 +4,8 @@ dh = DataHandler('class_A.bin', '2-3')
 
 dh.GetEvaluation()
 
-print(dh.WhoIsTheLowest())
-print(dh.rawdata[dh.WhoIsTheLowest()])
-print(dh.WhoIsTheHighest())
+print("the lowest score : ({} = {})".format(dh.WhoIsTheLowest(),\
+                                            dh.rawdata[dh.WhoIsTheLowest()]))
+
+print("the highest score : ({} = {})".format(dh.WhoIsTheHighest(),\
+                                             dh.rawdata[dh.WhoIsTheHighest()]))

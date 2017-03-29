@@ -1,4 +1,5 @@
 from EvaluateClass import *
+import pickle
 
 class DataHandler:
     #클래스 변수 : 클래스의 모든 인스턴스들이 공유하는 변수
@@ -16,64 +17,44 @@ class DataHandler:
                     break    
                 items.append(data)
         return items
-
-    @staticmethod
-    def GetScores(items):
-        scores = []
-        for item in items:
-            scores.append(list(item.values())[0])
-        return scores
-
+        
     @staticmethod
     def GetRawdataInDic(items):
         rawdata={}
-        for dic in items:
-            a = list(dic.items())
-            #print(a)
-            rawdata[a[0][0]] = a[0][1]
+        for item in items:
+            for i in item.items():
+                rawdata.update({i[0] : i[1]})
         return rawdata
 
     @staticmethod
+    def GetScores(rawdata):   
+        return reduce(lambda r, e : r.append(e) or r, rawdata.values(), [])
+    
+    @staticmethod
     def GetTheHighest(rawdata):
-        highest =''
-        highscore = 0
-        for ele in rawdata:
-            if highscore < rawdata[ele]:
-                highest = ele
-                highscore = rawdata[ele]
-        return highest
+        return reduce(lambda a, b: a if rawdata.get(a, 0) > rawdata.get(b) else b\
+                      , rawdata.keys(), 'who')
 
     @staticmethod
     def GetTheLowest(rawdata):
-        lowest = ''
-        lowscore = 0
-        for key in rawdata.keys():
-            if rawdata[key] > 0 :
-                lowscore = rawdata[key]
-                break
-				
-        for ele in rawdata:
-            if lowscore>= rawdata[ele]:
-                lowest = ele
-                lowscore = rawdata[ele]          
-        return lowest
-
+        return reduce(lambda a, b: a if rawdata.get(a, 101) < rawdata.get(b) else b\
+                      , rawdata.keys(), 'who')
 
     #생성자 : 객체 변수 모두 초기화
     def __init__(self, filename, clsname):        
         #객체 변수
         self.items = DataHandler.GetItemsFromFile(filename)
-        self.scores = DataHandler.GetScores(self.items)
+        self.rawdata = DataHandler.GetRawdataInDic(self.items)
+
+        self.scores = DataHandler.GetScores(self.rawdata)
         
         self.average = round(DataHandler.evaluator.average(self.scores), 1)
         self.variance = round(DataHandler.evaluator.variance(self.scores, self.average), 1)
         self.std_dev = round(math.sqrt(self.variance), 1)
+
         self.clsname = clsname
-        #ex2
-        self.rawdata = DataHandler.GetRawdataInDic(self.items)
-        #ex2
+        
         self.highest = DataHandler.GetTheHighest(self.rawdata)
-        #ex2
         self.lowest = DataHandler.GetTheLowest(self.rawdata)
         
     def GetAverage(self):
@@ -92,7 +73,7 @@ class DataHandler:
         print('*' * 50)
         print("%s 반 종합 평가" % self.clsname)
         print('*' * 50)
-        DataHandler.evaluator.evaluateClass(self.average, self.std_dev)
+        self.evaluateClass(self.average, self.std_dev)
         
     def WhoIsTheHighest(self):
         return self.highest
@@ -102,5 +83,21 @@ class DataHandler:
 
     def GetScoreByName(self, name):
         return self.rawdata[name]
+
+    def evaluateClass(self, avrg, std_dev):
+        if avrg <50 and std_dev >20:
+            print("성적이 너무 저조하고 학생들의 실력 차이가 너무 크다.")
+        elif avrg > 50 and std_dev >20:
+            print("성적은 평균이상이지만 학생들 실력 차이가 크다. 주의 요망!")
+        elif avrg < 50 and std_dev <20:
+            print("학생들간 실력차는 나지 않으나 성적이 너무 저조하다. 주의 요망!")
+        elif avrg > 50 and std_dev <20:
+            print("성적도 평균 이상이고 학생들의 실력차도 크지 않다.")
+
+
+
+
+
+    
     
     
