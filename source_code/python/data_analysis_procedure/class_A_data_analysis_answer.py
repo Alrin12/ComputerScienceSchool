@@ -1,18 +1,12 @@
 import pickle
 import math
+from functools import reduce
 
 def average(scores):
-    sum = 0
-    for score in scores:
-        sum += score
-    return sum/len(scores)
+    return reduce(lambda a, b: a + b, scores)/len(scores)
 
 def variance(scores, avrg):
-    variance_sum = 0
-    for score in scores:
-        a = score - avrg
-        variance_sum += (a**2)
-    return variance_sum/len(scores)
+    return reduce(lambda a, b: a + b, map(lambda s:(s-avrg)**2, scores))/len(scores)
 
 def evaluateClass(avrg, std_dev):
     if avrg <50 and std_dev >20:
@@ -35,20 +29,28 @@ while 1:
         break    
     items.append(data)
 
+print(items)
+
 scores = []
 
+# normal way
+'''
 for item in items:
-    #scores.append(list(item.values())[0])
-    keys = item.keys()
-    for key in keys:
-        scores.append(item[key])
+    for value in item.values():
+        scores.append(value)
+'''
+
+#pythonic way??
+scores = list(map(lambda x: x[0] , map(lambda item:list(item.values()),items)))
+
+print(scores)
 
 avrg = average(scores)
 variance = round(variance(scores, avrg), 1)
 standard_deviation = round(math.sqrt(variance), 1)
 
+print("\n")
 
-'''
 print('*' * 50)
 print("A반 성적 분석 결과")
 print('*' * 50)
@@ -56,7 +58,8 @@ print("A반의 평균은 {0}점이고 분산은 {1}이며, 따라서 표준편�
 print('*' * 50)
 print("A반 종합 평가")
 print('*' * 50)
-'''
+
+print('\n')
 evaluateClass(avrg, standard_deviation)
 
 f.close()
