@@ -4,10 +4,10 @@ class Retailer(Person):
     price = 1000
     
     def __init__(self, name, age, money, product):
-        Person.__init__(self, name, age, money)
+        super(Retailer, self).__init__(name, age, money)
         self.product = product
 
-    def Sell(self, other, how_many):
+    def transaction(self, other, how_many):
         #클래스 변수 : 객체 or 클래스를 통해 접근 가능
         if self.product >=how_many and other.money >= self.price * how_many:
             self.product -= how_many
@@ -15,12 +15,13 @@ class Retailer(Person):
             
             self.money += self.price * how_many
             other.money -= self.price * how_many
-            
 
-    def showMyInfo(self):
-        print("My name is {name}, {age} years old, and I am a retailer".format(name = self.name,
-                                                              age = self.age))
-        print("I have {0} products and {1} won".format(self.product, self.money))
+    def __str__(self):
+        return '''
+My name is {name}, {age} years old, and I am a retailer
+I have {product} products and {money} won
+'''.format(name = self.name, age = self.age, product = self.product, money = self.money)
+
 
    
     

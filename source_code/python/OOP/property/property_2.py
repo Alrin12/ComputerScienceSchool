@@ -17,8 +17,6 @@ p.showInfo()
 #생성 됐을 때도 음수는 아니게 만들고 싶습니다!
 '''
 
-
-
 class Person:
     def __init__(self, name, money):
         self.name = name
@@ -39,23 +37,19 @@ class Person:
         else:
             self._money = mon
 
-    def showInfo(self):
-        print("{} has {} won".format(self.name, self._money))
+    def __str__(self):
+        return "{} has {} won".format(self.name, self._money)
 
 if __name__ == "__main__":
     #setter 함수 호출
     p = Person('greg', -300)
-    p.showInfo()
-
-    print('\n\n')
-    
+    print(p)
+ 
     #getter 함수 호출
     #객체변수 처럼 쓰고 있지만 사실은 함수를 호출!!
     p.money
 
-    print("\n\n")
-
     #물론 정보은닉이 되는 건 아닙니다
     p._money = 50
-    p.showInfo()
+    print(p)
      
