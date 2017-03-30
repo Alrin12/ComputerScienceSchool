@@ -26,6 +26,6 @@
 -  project 폴더 생성
 
 ---
-# jypyter 실행
+# jupyter 실행
 - jupyter notebook
 - ipython notebook
