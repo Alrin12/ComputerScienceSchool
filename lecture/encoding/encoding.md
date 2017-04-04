@@ -76,7 +76,8 @@ print(make_hangul_unicode(11, 2, 21))
  - 1 byte ~ 4 byte 
  - U+0000 ~ U+007F(ASCII)
    - 1 byte로 나타낸다
- - 
+ - 한글 
+   - 3byte로 나타낸다
 
 
 ---
@@ -136,16 +137,6 @@ b'\xed\x8c\x8c\xec\x9d\xb4\xec\x8d\xac' # 한 글자당 3byte
  b'\xea\xb0\x80'
  # EA B0 80
  ```
----
-
-# character encoding
-## in python
- - 부호화 방식이 UTF-8
-```python
->>> string = coded_string.decode()
->>> string
-"파이썬"
-```
 ---
 
 # character encoding
