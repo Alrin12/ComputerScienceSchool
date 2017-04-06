@@ -18,6 +18,3 @@ class Person(metaclass = ABCMeta):
         else:
             print("you don't have {0}".format(how_much))
 
-
-
-            

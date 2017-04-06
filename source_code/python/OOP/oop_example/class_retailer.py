@@ -9,12 +9,12 @@ class Retailer(Person):
 
     def transaction(self, other, how_many):
         #클래스 변수 : 객체 or 클래스를 통해 접근 가능
-        if self.product >=how_many and other.money >= self.price * how_many:
+        total = self.price * how_many
+        if self.product >=how_many and other.money >= total:
             self.product -= how_many
             other.product += how_many
             
-            self.money += self.price * how_many
-            other.money -= self.price * how_many
+            other.giveMoney(self, total)
 
     def __str__(self):
         return '''

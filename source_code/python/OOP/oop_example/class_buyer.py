@@ -6,11 +6,13 @@ class Buyer(Person):
         self.product = product
 
     def transaction(self, other, how_many):
-        if self.money >= other.price * how_many and other.product >=how_many:
+        total = other.price * how_many
+        
+        if self.money >= total and other.product >=how_many:
             self.product += how_many
             other.product -= how_many
 
-            super(Buyer, self).giveMoney(other, other.price * how_many )
+            self.giveMoney(other, total)
 
     def __str__(self):
         return '''
