@@ -1,4 +1,4 @@
-from DataHandlerClass import *
+from datahandler import *
 
 dh = DataHandler('class_A.bin', '2-3')
 

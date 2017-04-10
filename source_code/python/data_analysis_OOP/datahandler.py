@@ -1,48 +1,46 @@
-from EvaluateClass import *
+from evaluate import *
 import pickle
+import math
 
 class DataHandler:
-    #클래스 변수 : 클래스의 모든 인스턴스들이 공유하는 변수
+    #클래스 멤버 : 연산기 하나 
     evaluator = Evaluate()
-
-    #class method : 전역함수처럼 쓸 수 있다              
+    
+     #class method : 전역함수처럼 쓸 수 있다              
     @classmethod
     def GetRawdataInDic(cls, filename):
-        items = []
+        rawdata = {}
+        
         with open(filename, 'rb') as f:
             while 1:
                 try: 
                     data = pickle.load(f)
                 except EOFError:
                     break    
-                items.append(data)
+                    
+                rawdata.update(data)
         
-        rawdata={}
-        for item in items:
-            for i in item.items():
-                rawdata.update({i[0] : i[1]})
         return rawdata
-
-
+    
     def __init__(self, filename, clsname):
         self.rawdata = DataHandler.GetRawdataInDic(filename)
-        self.clsname = clsname
-        
-        self.cache = {} #이미 계산된 데이터를 저장할 저장공간
+        self.clsname = clsname 
+        #연산한 값을 저장해두는 저장소
+        #필요할 때 연산하되
+        #이미 연산된 값이면 연산 없이 저장된 값을 반환
+        self.cache = {}
         
     def GetScores(self):
-        if "scores" not in self.cache:
-            scores = reduce(lambda r, e : r.append(e) or r, self.rawdata.values(), [])
-            self.cache["scores"] = scores
-
-        return self.cache.get("scores")
-
+        if 'scores' not in self.cache:
+            self.cache['scores'] = list(self.rawdata.values())
+        
+        return self.cache.get('scores')
+      
     def GetAverage(self):
-        if "average" not in self.cache:
-            avrg = round(self.evaluator.average(self.GetScores()), 1)
-            self.cache["average"] = avrg
-
-        return self.cache.get("average")
+        if 'average' not in self.cache:
+            self.cache['average'] = self.evaluator.average(self.GetScores())
+        
+        return self.cache.get('average')
 
     def GetVariance(self):
         if "variance" not in self.cache:
@@ -57,32 +55,29 @@ class DataHandler:
             self.cache["standard_deviation"] = std_dev
 
         return self.cache.get("standard_deviation")
-
-    def GetScoreByName(self, name):
-        return self.rawdata[name]
     
     def WhoIsHighest(self):
         if "highest" not in self.cache:
-            high = reduce(lambda a, b: a if self.rawdata.get(a, 0) > self.rawdata.get(b)\
-                             else b, self.rawdata.keys(), 'who')
-            self.cache["highest"] = high
+            self.cache['highest'] = reduce(lambda a, b:
+                              a if self.rawdata.get(a) > self.rawdata.get(b) else b,
+                            self.rawdata.keys())
             
         return self.cache.get("highest")
-
+    
     def GetHighestScore(self):
         return self.rawdata[self.WhoIsHighest()]
     
     def WhoIsLowest(self):
         if "lowest" not in self.cache:
-            low = reduce(lambda a, b: a if self.rawdata.get(a, 101) < self.rawdata.get(b) \
-                     else b, self.rawdata.keys(), 'who')
-            self.cache["lowest"] = low
+            self.cache['lowest'] = reduce(lambda a, b:
+                                a if self.rawdata.get(a) < self.rawdata.get(b) else b,
+                                         self.rawdata.keys())
             
-        return self.cache.get("lowest")
-
+        return self.cache.get('lowest')
+    
     def GetLowestScore(self):
-        return self.rawdata[self.WhoIsLowest()]    
-
+        return self.rawdata[self.WhoIsLowest()] 
+    
     def GetEvaluation(self):
         print('*' * 50)
         print("%s 반 성적 분석 결과" % self.clsname)
@@ -106,5 +101,3 @@ class DataHandler:
             print("학생들간 실력차는 나지 않으나 성적이 너무 저조하다. 주의 요망!")
         elif avrg > 50 and std_dev <20:
             print("성적도 평균 이상이고 학생들의 실력차도 크지 않다.")
-
-            

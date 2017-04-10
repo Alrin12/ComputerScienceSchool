@@ -1,5 +1,4 @@
 from functools import reduce
-import math
 
 class Evaluate:
     def average(self, scores):
