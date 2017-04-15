@@ -42,6 +42,9 @@ class linked_list:
     def delete(self):
         ret_data = self.current.data
 
+        if self.current == self.tail:
+            self.tail = self.head
+            
         self.before.next = self.current.next
         self.current = self.before
         self.num_of_data -= 1
@@ -72,6 +75,25 @@ if __name__ == "__main__":
     
     d_list.append(2)
     d_list.append(3)
+
+    data = d_list.first()
+    if data:
+        print(data)
+        d_list.delete()
+
+    data = d_list.next()
+    if data:
+        print(data)
+        d_list.delete()
+
+    d_list.append(1)
+    data = d_list.first()
+    if data:
+        print(data)
+    else:
+        print("there is no data stored")
+    
+    '''
     d_list.append(1)
     d_list.append(5)
     d_list.append(2)
@@ -102,7 +124,7 @@ if __name__ == "__main__":
             print(data, end = '  ')
         else:
             break
-
+    '''
 
 
         
