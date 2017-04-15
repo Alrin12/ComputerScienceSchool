@@ -5,8 +5,31 @@ using namespace std;
 int main(void)
 {
 	LinkedList<int> list;
+	
 	list.Add(2);
 	list.Add(3);
+
+	int n;
+
+	if (list.First(&n))
+	{
+		cout << n << endl;
+		list.Delete();
+		if (list.Next(&n))
+		{
+			cout << n << endl;
+			list.Delete();
+		}
+	}
+
+	list.Add(1);
+	if (list.First(&n))
+		cout << n << endl;
+	else
+		cout << "there is no data sotred" << endl;
+
+
+	/*
 	list.Add(1);
 	list.Add(5);
 	list.Add(10);
@@ -53,6 +76,7 @@ int main(void)
 		}
 	}
 	cout << endl;
-	
+	*/
+
 	return 0;
 }

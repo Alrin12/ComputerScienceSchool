@@ -79,10 +79,15 @@ T LinkedList<T>::Delete()
 {
 	Node * delNode = current;
 	T retData = delNode->data;
+	
+	if (delNode == tail)
+		tail = head;
+
 
 	before->next = current->next;
 	current = before;
 	numOfData--;
 	delete delNode;
+
 	return retData;
 }
