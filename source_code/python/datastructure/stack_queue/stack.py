@@ -1,53 +1,22 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
-
-class Stack:
-    def __init__(self):
-        #LIFO(Last Input First Out)이므로 맨 앞만 가리키고 있으면 됩니다
-        self.head = None
-
-    def IsEmpty(self):
-        if self.head == None:
-            return True
-
-        return False
-
-    def push(self, data):
-        newNode = Node(data)
-
-        newNode.next = self.head
-        self.head = newNode
-
-    def pop(self):
-        if self.IsEmpty():
-            print("There is no data")
-            exit(-1)
-
-        retData = self.head.data
-        delNode = self.head
-
-        self.head = self.head.next
-        return retData
+class Stack(list):
+    push = list.append
 
     def peek(self):
-        if self.IsEmpty():
-            print("There is no data")
-            exit(-1)
+        return self[-1]
 
-        return self.head.data
+    def size(self):
+        return len(self)
 
 if __name__ == "__main__":
-    stack = Stack()
+    s = Stack()
+    s.push(1)
+    s.push(2)
+    s.push(3)
+    s.push(4)
+    s.push(5)
 
-    stack.push(1)
-    stack.push(2)
-    stack.push(3)
-    stack.push(4)
-    stack.push(5)
+    for i in range(s.size()):
+        print("peek of stack : {}".format(s.peek()))
+        print(s.pop())
 
-    while not stack.IsEmpty():
-        print(stack.pop())
-
-        
+    
