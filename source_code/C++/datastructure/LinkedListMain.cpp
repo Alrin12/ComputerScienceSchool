@@ -26,7 +26,7 @@ int main(void)
 	if (list.First(&n))
 		cout << n << endl;
 	else
-		cout << "there is no data sotred" << endl;
+		cout << "there is no data" << endl;
 
 
 	/*
