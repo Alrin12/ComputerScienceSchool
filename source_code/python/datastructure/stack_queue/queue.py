@@ -1,14 +1,18 @@
 class Queue(list):
+    #enqueue ==> insert
     enqueue = list.append
-
+    #dequeue ==> delete
     def dequeue(self):
         return self.pop(0)
 
+    def is_empty(self):
+        if not self:
+            return True
+        else:
+            return False
+
     def peek(self):
         return self[0]
-
-    def size(self):
-        return len(self)
 
 if __name__ == "__main__":
     q = Queue()
@@ -18,7 +22,7 @@ if __name__ == "__main__":
     q.enqueue(4)
     q.enqueue(5)
 
-    for i in range(q.size()):
-        print("peek of queue : {}".format(q.peek()))
-        print(q.dequeue())
-
+    while not q.is_empty():
+        print(q.dequeue(), end = '  ')
+        
+        

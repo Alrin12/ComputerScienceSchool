@@ -1,11 +1,15 @@
 class Stack(list):
     push = list.append
 
+    def is_empty(self):
+        if not len(self):
+            return True
+        else:
+            return False
+
     def peek(self):
         return self[-1]
-
-    def size(self):
-        return len(self)
+        
 
 if __name__ == "__main__":
     s = Stack()
@@ -14,9 +18,10 @@ if __name__ == "__main__":
     s.push(3)
     s.push(4)
     s.push(5)
-
-    for i in range(s.size()):
-        print("peek of stack : {}".format(s.peek()))
-        print(s.pop())
-
     
+    while not s.is_empty():
+        data = s.pop()
+        print(data, end = '  ')
+
+
+        
