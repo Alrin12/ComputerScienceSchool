@@ -22,13 +22,13 @@ class linked_list:
         self.num_of_data += 1
 
     def first(self):
+        if not self.num_of_data:
+            return None
+        
         self.before = self.head
         self.current = self.head.next
 
-        if self.current:
-            return self.current.data
-
-        return None
+        return self.current.data
 
     def next(self):
         if not self.current.next:
@@ -41,10 +41,10 @@ class linked_list:
 
     def delete(self):
         ret_data = self.current.data
-
-        if self.current == self.tail:
-            self.tail = self.head
-            
+        
+        if self.current is self.tail:
+            self.tail = self.before
+          
         self.before.next = self.current.next
         self.current = self.before
         self.num_of_data -= 1
@@ -75,25 +75,6 @@ if __name__ == "__main__":
     
     d_list.append(2)
     d_list.append(3)
-
-    data = d_list.first()
-    if data:
-        print(data)
-        d_list.delete()
-
-    data = d_list.next()
-    if data:
-        print(data)
-        d_list.delete()
-
-    d_list.append(1)
-    data = d_list.first()
-    if data:
-        print(data)
-    else:
-        print("there is no data stored")
-    
-    '''
     d_list.append(1)
     d_list.append(5)
     d_list.append(2)
@@ -104,8 +85,6 @@ if __name__ == "__main__":
     print("데이터의 개수 : {}".format(d_list.size()))
     d_list.show_list()
     print("\n")
-
-
 
     data = d_list.first()
     if data == 2:
@@ -124,7 +103,6 @@ if __name__ == "__main__":
             print(data, end = '  ')
         else:
             break
-    '''
 
 
         
