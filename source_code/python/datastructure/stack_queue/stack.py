@@ -2,7 +2,7 @@ class Stack(list):
     push = list.append
 
     def is_empty(self):
-        if not len(self):
+        if not self:
             return True
         else:
             return False
