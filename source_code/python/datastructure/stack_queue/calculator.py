@@ -25,26 +25,24 @@ class Calculator:
             #연산자라면
             else:
                 #'(' or 연산자 스택이 비었다면
-                if ch == '(' or not oprt_stack:
+                if ch == '(' or oprt_stack.is_empty():
                     oprt_stack.push(ch)
-                #')', '+', -, *, /
-                else:
-                    if ch == ')':
+                #')'
+                elif ch == ')':
+                    op = oprt_stack.pop()
+                    while op != '(':
+                        exp_list.append(op)
                         op = oprt_stack.pop()
-                        while op != '(':
-                            exp_list.append(op)
-                            op = oprt_stack.pop()
-                    #+, -, *, /
-                    else:
-                        if self.get_weight(ch) > \
-                           self.get_weight(oprt_stack.peek()):
-                            oprt_stack.push(ch)
-                        else:
-                            while oprt_stack and \
-                                  self.get_weight(ch) <=\
-                                  self.get_weight(oprt_stack.peek()):
-                                exp_list.append(oprt_stack.pop())
-                            oprt_stack.push(ch)
+                #'+', '-', '*', '/' : 가중치가 높을 때
+                elif self.get_weight(ch) > \
+                    self.get_weight(oprt_stack.peek()):
+                    oprt_stack.push(ch)
+                #'+', '-', '*', '/' : 가중치가 낮거나 같을 때
+                else:
+                    while oprt_stack and self.get_weight(ch) <=\
+                          self.get_weight(oprt_stack.peek()):
+                        exp_list.append(oprt_stack.pop())
+                    oprt_stack.push(ch)
         while oprt_stack:
             exp_list.append(oprt_stack.pop())
         self.postfix_exp = ''.join(exp_list)
