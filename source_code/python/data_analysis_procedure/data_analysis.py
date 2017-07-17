@@ -1,30 +1,22 @@
-import pickle
+import openpyxl
 import math
 from functools import reduce
 
-def get_data(filename, mode = "wt"):
-    f = open(filename, mode)
-    items = []
-
-    while 1:
-        try: 
-            data = pickle.load(f)
-        except EOFError:
-            break    
-        items.append(data)
-
-    scores = []
-    for item in items:
-        for value in item.values():
-            scores.append(value)
-    f.close()
-    return scores
+def get_data_from_excel(filename):
+    dic = {}
+    wb = openpyxl.load_workbook(filename)
+    ws = wb.active
+    for a, b in ws['A1' : 'B10']:
+        dic[a.value] = b.value
+    return dic
 
 def average(scores):
     return reduce(lambda a, b: a + b, scores)/len(scores)
 
 def variance(scores, avrg):
-    return reduce(lambda a, b: a + b, map(lambda s:(s-avrg)**2, scores))/len(scores)
+    return round(reduce(
+        lambda a, b: a + b,
+        map(lambda s:(s-avrg)**2, scores))/len(scores), 1)
 
 def std_dev(variance):
     return round(math.sqrt(variance), 1)
@@ -40,24 +32,14 @@ def evaluateClass(avrg, std_dev):
         print("성적도 평균 이상이고 학생들의 실력차도 크지 않다.")
 
 if __name__ == "__main__":
-    scores = get_data("class_A.bin", "rb")
-    print(scores)
-
+    raw_data = get_data_from_excel('class_1.xlsx')
+    scores = list(raw_data.values())
+    
     avrg = average(scores)
-    variance = round(variance(scores, avrg), 1)
+    variance = variance(scores, avrg)
     standard_deviation = std_dev(variance)
-    print("\n")
 
-    print('*' * 50)
-    print("A반 성적 분석 결과")
-    print('*' * 50)
     print("A반의 평균은 {0}점이고 분산은 {1}이며, 따라서 표준편차는 {2}이다"\
           .format(avrg, variance, standard_deviation))
-    print('*' * 50)
-    print("A반 종합 평가")
-    print('*' * 50)
-    print('\n')
-
     evaluateClass(avrg, standard_deviation)
-
 

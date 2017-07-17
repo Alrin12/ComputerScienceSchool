@@ -1,6 +1,6 @@
 from datahandler import *
 
-dh = DataHandler('class_A.bin', '2-3')
+dh = DataHandler('class_1.xlsx', '2-3')
 
 dh.GetEvaluation()
 

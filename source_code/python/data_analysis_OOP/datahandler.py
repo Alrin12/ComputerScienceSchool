@@ -1,6 +1,5 @@
 from evaluate import *
-import pickle
-import math
+import openpyxl
 
 class DataHandler:
     #클래스 멤버 : 연산기 하나 
@@ -8,22 +7,16 @@ class DataHandler:
     
      #class method : 전역함수처럼 쓸 수 있다              
     @classmethod
-    def GetRawdataInDic(cls, filename):
-        rawdata = {}
-        
-        with open(filename, 'rb') as f:
-            while 1:
-                try: 
-                    data = pickle.load(f)
-                except EOFError:
-                    break    
-                    
-                rawdata.update(data)
-        
-        return rawdata
+    def get_data_from_excel(cls, filename):
+        dic = {}
+        wb = openpyxl.load_workbook(filename)
+        ws = wb.active
+        for a, b in ws['A1' : 'B10']:
+            dic[a.value] = b.value
+        return dic
     
     def __init__(self, filename, clsname):
-        self.rawdata = DataHandler.GetRawdataInDic(filename)
+        self.rawdata = DataHandler.get_data_from_excel(filename)
         self.clsname = clsname 
         #연산한 값을 저장해두는 저장소
         #필요할 때 연산하되
@@ -44,14 +37,16 @@ class DataHandler:
 
     def GetVariance(self):
         if "variance" not in self.cache:
-            vari = round(self.evaluator.variance(self.GetScores(), self.GetAverage()), 1)
+            vari = self.evaluator.variance(
+                self.GetScores(), self.GetAverage())
             self.cache["variance"] = vari
   
         return self.cache.get("variance")
 
     def GetStandardDeviation(self):
         if "standard_deviation" not in self.cache:
-            std_dev = round(math.sqrt(self.GetVariance()), 1)
+            std_dev = self.evaluator.std_dev(
+                self.GetVariance())
             self.cache["standard_deviation"] = std_dev
 
         return self.cache.get("standard_deviation")
